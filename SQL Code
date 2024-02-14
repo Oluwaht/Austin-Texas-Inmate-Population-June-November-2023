@@ -1,0 +1,76 @@
+-- View entire dataset
+
+SELECT *
+FROM Austin.inmates
+
+-- QUESTION 1: What percentage of inmates were male and female?
+
+SELECT
+  gender,
+  COUNT(*) AS count,
+  ROUND(COUNT(*) / (SELECT COUNT(*) FROM Austin.inmates) * 100, 2) AS percentage
+FROM Austin.inmates
+GROUP BY gender;
+
+-- QUESTION 2: What is the most common age?
+
+SELECT Age, COUNT(*) AS count
+FROM Austin.inmates
+GROUP BY Age
+ORDER BY count DESC
+LIMIT 5;
+
+-- QUESTION 3: What is the most common racial demographic?
+
+SELECT
+  Race,
+  COUNT(*) AS count,
+  ROUND((COUNT(*) / (SELECT COUNT(*) FROM Austin.inmates)) * 100, 2) AS percentage
+FROM Austin.inmates
+GROUP BY Race
+ORDER BY count DESC;
+
+-- QUESTION 4: What were the most common counties of origin for the inmates?
+
+SELECT
+  County, 
+  COUNT(*) AS Count
+FROM Austin.inmates
+GROUP BY county
+ORDER BY count DESC;
+
+-- QUESTION 5; Rank the count of sentence years
+
+SELECT
+  sentence_years, 
+  count(*) AS Count
+FROM Austin.inmates
+GROUP BY sentence_years
+ORDER BY sentence_years DESC;
+
+-- QUESTION 6: What was the average sentence length for inmates admitted?
+
+SELECT
+  ROUND(AVG(CAST(sentence_years AS INT)), 2) AS average_sentence_length_years
+FROM Austin.inmates
+WHERE sentence_date >= '2023-06-01' AND projected_release <= '2023-11-30';
+
+
+-- QUESTION 7: What are the most common parole decisions?
+
+SELECT
+  last_parole_decision, 
+  count(*) AS Count_parole
+FROM Austin.inmates
+GROUP BY last_parole_decision
+ORDER BY Count_parole DESC;
+
+
+-- QUESTION 8: What were the most common types of offenses committed by inmates admitted during the period?
+
+SELECT
+  DISTINCT offense, 
+  count(*) AS offense_count
+FROM Austin.inmates
+GROUP BY offense
+ORDER BY offense_count DESC;
