@@ -46,14 +46,23 @@ Coffield County houses the highest number of inmates in Austin.
 ## Data Analysis - Done
 
 Percentage of male and female inmates.
+
 Most common age groups.
+
 Most common racial demographic.
+
 Most common counties of origin for inmates.
+
 Ranking of sentence years.
+
 Average sentence length for admitted inmates.
+
 Most common parole decisions.
+
 County with the highest number of inmates.
+
 Most common types of offenses.
+
 Future Work
 
 Visualizations for a more intuitive understanding of the data.
