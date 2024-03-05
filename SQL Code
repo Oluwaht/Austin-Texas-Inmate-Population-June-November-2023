@@ -18,7 +18,7 @@ SELECT Age, COUNT(*) AS count
 FROM Austin.inmates
 GROUP BY Age
 ORDER BY count DESC
-LIMIT 5;
+LIMIT 10;
 
 -- QUESTION 3: What is the most common racial demographic?
 
@@ -39,16 +39,28 @@ FROM Austin.inmates
 GROUP BY county
 ORDER BY count DESC;
 
--- QUESTION 5; Rank the count of sentence years
+
+-- QUESTION 5: What County houses the most inmates?
+
+SELECT
+  current_facility, 
+  COUNT(*) as facility_count
+FROM Austin.inmates
+GROUP BY current_facility
+ORDER BY facility_count DESC;
+
+
+-- QUESTION 6; Most common sentence?
 
 SELECT
   sentence_years, 
   count(*) AS Count
 FROM Austin.inmates
 GROUP BY sentence_years
-ORDER BY sentence_years DESC;
+ORDER BY Count DESC
+LIMIT 10;
 
--- QUESTION 6: What was the average sentence length for inmates admitted?
+-- QUESTION 7: What was the average sentence length for inmates admitted?
 
 SELECT
   ROUND(AVG(CAST(sentence_years AS INT)), 2) AS average_sentence_length_years
@@ -56,7 +68,7 @@ FROM Austin.inmates
 WHERE sentence_date >= '2023-06-01' AND projected_release <= '2023-11-30';
 
 
--- QUESTION 7: What are the most common parole decisions?
+-- QUESTION 8: Most common parole decisions?
 
 SELECT
   last_parole_decision, 
@@ -66,11 +78,70 @@ GROUP BY last_parole_decision
 ORDER BY Count_parole DESC;
 
 
--- QUESTION 8: What were the most common types of offenses committed by inmates admitted during the period?
+-- QUESTION 9: What were the most common types of offenses committed by inmates admitted during the period?
 
 SELECT
-  DISTINCT offense, 
+  offense, 
   count(*) AS offense_count
 FROM Austin.inmates
 GROUP BY offense
-ORDER BY offense_count DESC;
+ORDER BY offense_count DESC
+LIMIT 20;
+
+
+-- QUESTION 10: What County houses the most inmates?
+
+SELECT
+  current_facility, 
+  COUNT(*) as facility_count
+FROM Austin.inmates
+GROUP BY current_facility
+ORDER BY facility_count DESC
+LIMIT 12;
+
+-- QUESTION 11: Did the types of offenses vary by demographic factors such as race, gender, or age?
+
+SELECT
+  Race,
+  Gender,
+  Age,
+  Offense,
+  COUNT(*) AS count
+FROM Austin.inmates
+WHERE sentence_date >= '2023-06-01' AND projected_release <= '2023-11-30'
+GROUP BY Race, Gender, Age, Offense
+ORDER BY Race, Gender, Age, count DESC;
+
+----
+
+
+SELECT
+  Race,
+  Offense,
+  COUNT(*) AS count
+FROM Austin.inmates
+WHERE sentence_date >= '2023-06-01' AND projected_release <= '2023-11-30'
+GROUP BY Race, Offense
+ORDER BY Race, count DESC;
+
+WITH RankedOffenses AS (
+  SELECT *,
+    DENSE_RANK() OVER (PARTITION BY Race ORDER BY count DESC) AS rank
+  FROM (
+    SELECT
+      Race,
+      Offense,
+      COUNT(*) AS count
+    FROM Austin.inmates
+    WHERE sentence_date >= '2023-06-01' AND projected_release <= '2023-11-30'
+    GROUP BY Race, Offense
+  ) AS subquery
+)
+SELECT
+  Race,
+  Offense
+FROM RankedOffenses
+WHERE rank = 1;
+
+
+
