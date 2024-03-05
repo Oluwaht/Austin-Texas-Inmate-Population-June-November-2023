@@ -6,7 +6,7 @@ This repository contains data on the inmate population in Austin, Texas, for the
 
 ## Data Source
 
-The data is provided by the Texas Department of Criminal Justice - Executive Services.
+The data is provided by the Texas Department of Criminal Justice - Executive Services. https://data.texas.gov/dataset/High-Value-Dataset-November-2023/v2if-qkzu/about_data
 
 # Key Metrics and Insights
 
