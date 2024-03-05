@@ -63,8 +63,3 @@ County with the highest number of inmates.
 
 Most common types of offenses.
 
-## Future Work
-
-Visualizations for a more intuitive understanding of the data.
-Time series analysis to identify trends over the six-month period.
-Correlation analysis to explore relationships between variables.
